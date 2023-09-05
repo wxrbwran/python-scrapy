@@ -62,12 +62,10 @@ DOWNLOADER_MIDDLEWARES = {
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-ITEM_PIPELINES = {
-   "scrapy_scrawler.to8to_pipelines.To8toScrapyScrawlerPipeline": 300,
-   "scrapy_scrawler.to8to_pipelines.To8toImagePipeline": 301,
-   #
-   
-}
+# ITEM_PIPELINES = {
+#    "scrapy_scrawler.to8to_pipelines.To8toMongoPipeline": 300,
+#    "scrapy_scrawler.to8to_pipelines.To8toImagePipeline": 301,
+# }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
@@ -96,3 +94,7 @@ TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 FEED_EXPORT_ENCODING = "utf-8"
 
 IMAGES_STORE = "images"
+
+MONGODB_URI = "mongodb://127.0.0.1"
+MONGODB_DATABASE = "to8to"
+MONGODB_PORT = "27017"

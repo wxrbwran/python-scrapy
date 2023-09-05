@@ -10,11 +10,34 @@ from scrapy.exceptions import DropItem
 from scrapy.pipelines.images import ImagesPipeline
 
 
-class To8toScrapyScrawlerPipeline:
+class To8toMongoPipeline:
     def __init__(self):
+        # mongo_uri =
         myclient = pymongo.MongoClient("mongodb://127.0.0.1:27017")
         mydb = myclient['to8to']
         self.mycollection = mydb['c_to8to']
+    
+    # def __init__(self, mongo_uri, mongo_db, mongo_port):
+    #     self.client = None
+    #     self.db = None
+    #     self.mongo_uri = mongo_uri
+    #     self.mongo_db = mongo_db
+    #     self.mongo_port = mongo_port
+    #
+    # @classmethod
+    # def from_crawler(cls, crawler):
+    #     return cls(
+    #         mongo_uri=crawler.settings.get("NONGODB_URI"),
+    #         mongo_db=crawler.settings.get("NONGODB_DATABASE"),
+    #         mongo_port=crawler.settings.get("NONGODB_PORT"),
+    #     )
+    #
+    # def open_spider(self, spider):
+    #     self.client = pymongo.MongoClient(self.mongo_uri, self.mongo_port)
+    #     self.db = self.client[self.mongo_db]
+    #
+    # def close_spider(self, spider):
+    #     self.client.close()
     
     def process_item(self, item, spider):
         # print("To8toScrapyScrawlerPipeline")
@@ -49,4 +72,4 @@ class To8toImagePipeline(ImagesPipeline):
     def file_path(self, request, response=None, info=None, *, item=None):
         # 用于下载图片设置图片名称
         file_name = request.url.split("/")[-1]
-        return file_name
+        return f"to8to/{file_name}"

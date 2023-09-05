@@ -128,3 +128,32 @@ class MyUserAgentMiddleware:
         #   installed downloader middleware will be called
         return None
     pass
+
+
+class HandleGuaziDetail:
+    def process_response(self, request, response, spider):
+        # Called with the response returned from the downloader.
+        
+        # Must either;
+        # - return a Response object
+        # - return a Request object
+        # - or raise IgnoreRequest
+        replace_value = {
+            "0": "&#59854;",
+            "1": "&#58397;",
+            "2": "&#58928;",
+            "3": "&#60146;",
+            "4": "&#58149;",
+            "5": "&#59537;",
+            "6": "&#60492;",
+            "7": "&#57808;",
+            "8": "&#59246;",
+            "9": "&#58670;",
+        }
+        text = response.text
+        for i, v in replace_value.items():
+            if v in text:
+                text = text.replace(v, i)
+        response = response.replace(body=text)
+        return response
+    

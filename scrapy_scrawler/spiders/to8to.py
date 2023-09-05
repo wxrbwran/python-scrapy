@@ -2,7 +2,7 @@ import re
 
 import scrapy
 
-from scrapy_scrawler.to8to_items import To8toItem
+from scrapy_scrawler.items import To8toItem
 
 
 class To8toSpider(scrapy.Spider):
@@ -10,6 +10,14 @@ class To8toSpider(scrapy.Spider):
     allowed_domains = ["xiaoguotu.to8to.com"]
     start_urls = ["https://xiaoguotu.to8to.com/tuce_sort1?page=1"]
     
+    @classmethod
+    def update_settings(cls, settings):
+        super().update_settings(settings)
+        settings.set("ITEM_PIPELINES", {
+            "scrapy_scrawler.to8to_pipelines.To8toMongoPipeline": 300,
+            "scrapy_scrawler.to8to_pipelines.To8toImagePipeline": 301,
+        }, priority="spider")
+        
     def parse(self, response):
         # print("to8to:")
         # print(response.text)
@@ -31,7 +39,7 @@ class To8toSpider(scrapy.Spider):
         # 如果存在下一页
         if response.xpath('//*[@id="nextpageid"]'):
             now_page = int(response.xpath('/html/body/div[3]/div[6]/div/strong/text()').extract_first())
-            # 测试，只爬取前两页
+            # 测试，只爬取1页
             if now_page <= -2:
                 next_url = f"https://xiaoguotu.to8to.com/tuce_sort1?page={now_page + 1}"
                 yield scrapy.Request(url=next_url, callback=self.parse)
@@ -45,6 +53,8 @@ class To8toSpider(scrapy.Spider):
             thumb_img_url = i.xpath("./div/img/@src").extract_first()
             full_img_url = thumb_img_url.split("_284.jpg")[0] + ".jpg!750.webp"
             img_list.append(full_img_url)
+            # 测试，只存一张
+            break
         to8to_info = To8toItem()
         meta = response.request.meta
         to8to_info['content_name'] = meta['content_name']
