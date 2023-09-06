@@ -95,6 +95,18 @@ FEED_EXPORT_ENCODING = "utf-8"
 
 IMAGES_STORE = "images"
 
+# mongo
 MONGODB_URI = "mongodb://127.0.0.1"
 MONGODB_DATABASE = "to8to"
 MONGODB_PORT = "27017"
+
+# 设置去重组件
+DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
+
+# 调度组件
+SCHEDULER = "scrapy_redis.scheduler.Scheduler"
+
+# redis
+REDIS_HOST = "127.0.0.1"
+REDIS_PORT = 6379
+REDIS_ENCODING = "utf-8"
