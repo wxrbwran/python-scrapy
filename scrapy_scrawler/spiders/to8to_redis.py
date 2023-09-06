@@ -38,7 +38,8 @@ class To8toSpider(RedisSpider):
             # 测试，只爬取1页
             if now_page <= -2:
                 next_url = f"https://xiaoguotu.to8to.com/tuce_sort1?page={now_page + 1}"
-                yield scrapy.Request(url=next_url, callback=self.parse)
+                
+                yield scrapy.Request(url=next_url, callback=self.parse, dont_filter=False)
                 
     def handle_pic_parse(self, response):
         #
